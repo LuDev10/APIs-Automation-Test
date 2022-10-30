@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "661b3565-3063-4a46-a825-a4935a97e081",
+		"name": "MyStore API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21763791"
+	},
+	"item": [
+		{
+			"name": "Todos los producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Su respuesta debe ser 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Debe tardar en cargar unos 1500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);",
+							"});",
+							"pm.test(\"Respuesta de api debe tener campo ID\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"id\");",
+							"});",
+							"pm.test(\"Respuesta de api debe tener campo Categoria\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"category\");",
+							"});",
+							"pm.test(\"El encabezado de respuesta contiene Fecha\", function () {",
+							"    pm.response.to.have.header(\"Date\");",
+							"});",
+							"pm.test(\"El JSON debe contener campo Estatus con su respectivo valor\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.category).to.eql(\"Accessories\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}catalog/categories",
+					"host": [
+						"{{URL}}catalog"
+					],
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API productos por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El JSON debe contener campo Category con su respectivo valor\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.category).to.eql(\"Appliances\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}catalog/product/677634\n",
+					"host": [
+						"{{URL}}catalog"
+					],
+					"path": [
+						"product",
+						"677634\n"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API Productos por categoria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}catalog/{{Categoria}}/supplements/products?limit=20&skip=1\n",
+					"host": [
+						"{{URL}}catalog"
+					],
+					"path": [
+						"{{Categoria}}",
+						"supplements",
+						"products"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "20"
+						},
+						{
+							"key": "skip",
+							"value": "1\n"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API crear productos en la tienda",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.variables.set(\"name\",\"TV\");",
+							"pm.variables.set(\"price\",50000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"{{name}}\",\n  \"price\": \"{{price}}\",\n  \"manufacturer\": \"Sony\",\n  \"category\": \"Appliances\",\n  \"description\": \"Sony bravia 8k 152 pulgadas\",\n  \"tags\": \"\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}catalog/product",
+					"host": [
+						"{{URL}}catalog"
+					],
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API Borrar Producto",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://mystoreapi.com/catalog/product/672087\n",
+					"protocol": "https",
+					"host": [
+						"mystoreapi",
+						"com"
+					],
+					"path": [
+						"catalog",
+						"product",
+						"672087\n"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
